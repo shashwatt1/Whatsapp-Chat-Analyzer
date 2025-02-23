@@ -70,14 +70,22 @@ if uploaded_file is not None:
         st.title("Chat Data")
         st.dataframe(df)
 
-        # Sentiment Analysis
+        # 🔹 **Improved Sentiment Analysis Graph**
         st.title("Sentiment Analysis")
         vaders = helper.sentiment_analysis(selected_user, df)
 
         if not vaders.empty and 'user' in vaders.columns and 'compound' in vaders.columns:
             fig, ax = plt.subplots(figsize=(12, 6))
-            sns.barplot(data=vaders.head(40), x='user', y='compound', ax=ax)
-            ax.set_xticklabels(ax.get_xticklabels(), fontsize=8, rotation=90)
+
+            # Show only top 20 users with highest sentiment scores
+            top_users = vaders.groupby('user')['compound'].mean().abs().sort_values(ascending=False).head(20).index
+            vaders_filtered = vaders[vaders['user'].isin(top_users)]
+
+            sns.barplot(data=vaders_filtered, x='user', y='compound', palette="coolwarm", ax=ax)
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha="right", fontsize=10)
+            ax.set_xlabel("User", fontsize=12, fontweight="bold")
+            ax.set_ylabel("Sentiment Score", fontsize=12, fontweight="bold")
+            ax.set_title("Average Sentiment Score per User", fontsize=14, fontweight="bold", color="darkblue")
             st.pyplot(fig)
         else:
             st.warning("⚠ No sentiment data available for the selected user.")
@@ -91,7 +99,7 @@ if uploaded_file is not None:
             plt.xticks(rotation='vertical')
             st.pyplot(fig)
 
-        # Weekly Activity Heatmap
+        # 🔹 **Weekly Activity Heatmap (Only Colors)**
         st.title("Weekly Activity Heatmap")
         user_heatmap = helper.activity_heatmap(selected_user, df)
         if not user_heatmap.empty:
