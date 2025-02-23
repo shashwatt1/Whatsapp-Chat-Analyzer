@@ -96,10 +96,36 @@ if uploaded_file is not None:
         user_heatmap = helper.activity_heatmap(selected_user, df)
         if not user_heatmap.empty:
             fig, ax = plt.subplots()
-            sns.heatmap(user_heatmap, cmap="coolwarm", annot=True)
+            sns.heatmap(user_heatmap, cmap="coolwarm", annot=False)  # Only colors, no numbers
             st.pyplot(fig)
         else:
             st.warning("⚠ Not enough data for a heatmap.")
+
+        # 🔹 **Busiest Day Bar Graph**
+        st.title("Busiest Days of the Week")
+        busiest_day = helper.week_activity_map(selected_user, df)
+        if not busiest_day.empty:
+            fig, ax = plt.subplots()
+            sns.barplot(x=busiest_day.index, y=busiest_day.values, palette="Blues_d", ax=ax)
+            ax.set_xlabel("Day of the Week", fontsize=12)
+            ax.set_ylabel("Number of Messages", fontsize=12)
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
+        else:
+            st.warning("⚠ Not enough data for busiest day analysis.")
+
+        # 🔹 **Busiest Month Bar Graph**
+        st.title("Busiest Months")
+        busiest_month = helper.month_activity_map(selected_user, df)
+        if not busiest_month.empty:
+            fig, ax = plt.subplots()
+            sns.barplot(x=busiest_month.index, y=busiest_month.values, palette="Purples_d", ax=ax)
+            ax.set_xlabel("Month", fontsize=12)
+            ax.set_ylabel("Number of Messages", fontsize=12)
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
+        else:
+            st.warning("⚠ Not enough data for busiest month analysis.")
 
         # Most Busy Users
         if selected_user == "Overall":
