@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def preprocess(data):
-    pattern = r'\[\d{2}/\d{2}/\d{2},\s\d{2}:\d{2}:\d{2}\]'  # Updated to match your chat format
+    pattern = r'\[\d{2}/\d{2}/\d{2},\s\d{2}:\d{2}:\d{2}\]'  # Matches date format in chat
 
     messages = re.split(pattern, data)[1:]
     dates = re.findall(pattern, data)
@@ -51,10 +51,12 @@ def plot_weekly_activity(df):
     activity = df.groupby(['day_name', 'period']).size().unstack().fillna(0)
 
     plt.figure(figsize=(12, 6))
-    sns.heatmap(activity, cmap='coolwarm', linewidths=0.5, linecolor='black', annot=False)
-    plt.title('Weekly Activity Map', fontsize=14)
-    plt.ylabel('Day of the Week', fontsize=12)
-    plt.xlabel('Hour Period', fontsize=12)
-    plt.xticks(rotation=45)
-    plt.yticks(rotation=0)
+    cmap = sns.color_palette("coolwarm", as_cmap=True)
+    sns.heatmap(activity, cmap=cmap, linewidths=0.3, linecolor='gray', annot=True, fmt=".0f", cbar=True)
+
+    plt.title('Weekly Activity Heatmap', fontsize=14, fontweight='bold', color='darkblue')
+    plt.ylabel('Day of the Week', fontsize=12, fontweight='bold')
+    plt.xlabel('Hour Period', fontsize=12, fontweight='bold')
+    plt.xticks(rotation=45, ha='right', fontsize=10)
+    plt.yticks(rotation=0, fontsize=10)
     plt.show()
