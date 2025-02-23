@@ -6,3 +6,4 @@ matplotlib
 urlextract
 wordcloud
 emoji
+nltk
