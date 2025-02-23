@@ -52,11 +52,36 @@ def plot_weekly_activity(df):
 
     plt.figure(figsize=(12, 6))
     cmap = sns.color_palette("coolwarm", as_cmap=True)
-    sns.heatmap(activity, cmap=cmap, linewidths=0.3, linecolor='gray', annot=True, fmt=".0f", cbar=True)
+    sns.heatmap(activity, cmap=cmap, linewidths=0.3, linecolor='gray', cbar=True, annot=False)
 
     plt.title('Weekly Activity Heatmap', fontsize=14, fontweight='bold', color='darkblue')
     plt.ylabel('Day of the Week', fontsize=12, fontweight='bold')
     plt.xlabel('Hour Period', fontsize=12, fontweight='bold')
     plt.xticks(rotation=45, ha='right', fontsize=10)
     plt.yticks(rotation=0, fontsize=10)
+    plt.show()
+
+def plot_busiest_day(df):
+    plt.figure(figsize=(8, 5))
+    order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    day_counts = df['day_name'].value_counts().reindex(order)
+
+    sns.barplot(x=day_counts.index, y=day_counts.values, palette="Blues_d")
+    plt.title('Busiest Days of the Week', fontsize=14, fontweight='bold', color='darkblue')
+    plt.xlabel('Day of the Week', fontsize=12, fontweight='bold')
+    plt.ylabel('Number of Messages', fontsize=12, fontweight='bold')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.show()
+
+def plot_busiest_month(df):
+    plt.figure(figsize=(10, 5))
+    month_counts = df['month'].value_counts().sort_index()
+
+    sns.barplot(x=month_counts.index, y=month_counts.values, palette="Purples_d")
+    plt.title('Busiest Months', fontsize=14, fontweight='bold', color='darkblue')
+    plt.xlabel('Month', fontsize=12, fontweight='bold')
+    plt.ylabel('Number of Messages', fontsize=12, fontweight='bold')
+    plt.xticks(rotation=45)
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.show()
