@@ -6,6 +6,7 @@ import zipfile
 import chardet
 import pandas as pd
 
+
 st.sidebar.title("Whatsapp Chat Analyzer")
 
 # Handle ZIP or TXT file upload
@@ -171,3 +172,4 @@ if uploaded_file is not None:
                 st.pyplot(fig)
         else:
             st.warning("⚠ No emojis found in chat.")
+
